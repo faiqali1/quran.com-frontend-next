@@ -13,8 +13,6 @@ import PageContainer from './PageContainer';
 import PageNavigationButtons from './PageNavigationButtons';
 import styles from './ReadingView.module.scss';
 
-import Button, { ButtonSize } from 'src/components/dls/Button/Button';
-import KeyboardInput from 'src/components/dls/KeyboardInput';
 import Spinner from 'src/components/dls/Spinner/Spinner';
 import useFetchPagesCount from 'src/components/QuranReader/hooks/useFetchTotalPages';
 import onCopyQuranWords from 'src/components/QuranReader/onCopyQuranWords';
@@ -178,33 +176,6 @@ const ReadingView = ({
             ),
           }}
         />
-      </div>
-      <div className={styles.buttonsContainer}>
-        <Button
-          size={ButtonSize.Small}
-          className={styles.prevButton}
-          onClick={scrollToPreviousPage}
-          tooltip={
-            <>
-              {t('prev-page')} <KeyboardInput invertColors keyboardKey="⬆" />
-            </>
-          }
-          tooltipContentSide={ContentSide.LEFT}
-        >
-          <ChevronDownIcon />
-        </Button>
-        <Button
-          size={ButtonSize.Small}
-          onClick={scrollToNextPage}
-          tooltip={
-            <>
-              {t('next-page')} <KeyboardInput invertColors keyboardKey="⬇" />
-            </>
-          }
-          tooltipContentSide={ContentSide.LEFT}
-        >
-          <ChevronDownIcon />
-        </Button>
       </div>
       <PageNavigationButtons
         scrollToNextPage={scrollToNextPage}
