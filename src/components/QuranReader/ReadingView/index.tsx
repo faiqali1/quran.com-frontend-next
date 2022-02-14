@@ -8,16 +8,14 @@ import dynamic from 'next/dynamic';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
-import ChevronDownIcon from '../../../../public/icons/chevron-down.svg';
-
 import useScrollToVirtualizedVerse from './hooks/useScrollToVirtualizedVerse';
 import PageContainer from './PageContainer';
+import PageNavigationButtons from './PageNavigationButtons';
 import styles from './ReadingView.module.scss';
 
 import Button, { ButtonSize } from 'src/components/dls/Button/Button';
 import KeyboardInput from 'src/components/dls/KeyboardInput';
 import Spinner from 'src/components/dls/Spinner/Spinner';
-import { ContentSide } from 'src/components/dls/Tooltip';
 import useFetchPagesCount from 'src/components/QuranReader/hooks/useFetchTotalPages';
 import onCopyQuranWords from 'src/components/QuranReader/onCopyQuranWords';
 import QueryParamMessage from 'src/components/QuranReader/QueryParamMessage';
@@ -56,7 +54,7 @@ const ReadingView = ({
   const [mushafPageToVersesMap, setMushafPageToVersesMap] = useState<Record<number, Verse[]>>({
     [initialFirstMushafPage]: initialData.verses,
   });
-  const { lang, t } = useTranslation('quran-reader');
+  const { lang } = useTranslation('quran-reader');
   const currentPageIndex = useRef<number>(0);
   const verses = useMemo(
     () => Object.values(mushafPageToVersesMap).flat(),
@@ -96,7 +94,7 @@ const ReadingView = ({
     virtuosoRef.current.scrollToIndex({
       index: currentPageIndex.current - 1,
       align: 'start',
-      offset: -70,
+      offset: -35,
     });
   }, []);
 
@@ -208,6 +206,10 @@ const ReadingView = ({
           <ChevronDownIcon />
         </Button>
       </div>
+      <PageNavigationButtons
+        scrollToNextPage={scrollToNextPage}
+        scrollToPreviousPage={scrollToPreviousPage}
+      />
     </>
   );
 };

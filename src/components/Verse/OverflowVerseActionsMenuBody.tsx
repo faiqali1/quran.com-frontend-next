@@ -21,6 +21,8 @@ import VerseActionRepeatAudio from './VerseActionRepeatAudio';
 
 import PopoverMenu from 'src/components/dls/PopoverMenu/PopoverMenu';
 import { ToastStatus, useToast } from 'src/components/dls/Toast/Toast';
+import useSetPortalledZIndex from 'src/components/QuranReader/hooks/useSetPortalledZIndex';
+import WordByWordVerseAction from 'src/components/QuranReader/ReadingView/WordByWordVerseAction';
 import useBrowserLayoutEffect from 'src/hooks/useBrowserLayoutEffect';
 import { selectBookmarks, toggleVerseBookmark } from 'src/redux/slices/QuranReader/bookmarks';
 import { logButtonClick } from 'src/utils/eventLogger';
@@ -28,9 +30,11 @@ import { getQuranReflectVerseUrl } from 'src/utils/navigation';
 import { navigateToExternalUrl } from 'src/utils/url';
 import { getVerseUrl } from 'src/utils/verse';
 import Verse from 'types/Verse';
+import Word from 'types/Word';
 
 interface Props {
   verse: Verse;
+  word: Word;
   isPortalled?: boolean;
   isTranslationView: boolean;
   onActionTriggered?: () => void;
@@ -44,6 +48,7 @@ const OverflowVerseActionsMenuBody: React.FC<Props> = ({
   isPortalled,
   isTranslationView,
   onActionTriggered,
+  word,
 }) => {
   const { t } = useTranslation('common');
   const bookmarkedVerses = useSelector(selectBookmarks, shallowEqual);
@@ -51,6 +56,7 @@ const OverflowVerseActionsMenuBody: React.FC<Props> = ({
   const [isShared, setIsShared] = useState(false);
   const router = useRouter();
   const toast = useToast();
+  useSetPortalledZIndex(DATA_POPOVER_PORTALLED, isPortalled);
 
   /**
    * A hook that will run once to check if the body is portalled or not and if it is,
@@ -146,13 +152,14 @@ const OverflowVerseActionsMenuBody: React.FC<Props> = ({
       </PopoverMenu.Item>
 
       <VerseActionAdvancedCopy verse={verse} isTranslationView={isTranslationView} />
-
+      {!isTranslationView && (
+        <WordByWordVerseAction word={word} onActionTriggered={onActionTriggered} />
+      )}
       <TafsirVerseAction
         chapterId={Number(verse.chapterId)}
         verseNumber={verse.verseNumber}
         isTranslationView={isTranslationView}
       />
-
       <PopoverMenu.Item
         className={styles.hiddenOnDesktop}
         onClick={() => {
